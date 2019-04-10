@@ -10,11 +10,18 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
 
-    var itemArray = ["Buy Groceries", "Eat Raw Eggs", "Suffer the Consequences"]
+    var itemArray : [String] = []
+    
+    let defaults = UserDefaults.standard
+    //this accesses a small storage area allocated to each app that will retain default settings across app launches
     
     override func viewDidLoad() {
         super.viewDidLoad()
     
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
+        
     }
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -59,6 +66,8 @@ class TodoListViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) {
             (action) in
             self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            //this line sets a key value pair to be saved; the first part is the value and the second part is the key name
             self.tableView.reloadData()
         }
         
